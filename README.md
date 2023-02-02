@@ -1,6 +1,4 @@
-# General Purpose Data Flow (Spatial) Programming for FPGAs Using Coarray Fortran (as yet only emulated on CPUs):
-## 1. Defining Some Basics
-### (Adapting Spatial Programming Techniques to Coarray Fortran)
+# General Purpose Data Flow (Spatial) Programming for FPGAs Using Coarray Fortran (as yet only emulated on CPUs): 1. Defining Some Basics
 
 I open this repository to initially define and describe some basic spatial programming techniques using Coarray Fortran (2018).
 
