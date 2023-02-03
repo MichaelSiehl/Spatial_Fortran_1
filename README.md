@@ -29,7 +29,7 @@ This work does rely on a number of assumptions:
 I do assume that ***execution segment ordering*** with a user-defined ***non-blocking synchronization*** in Coarray Fortran (which does execute Fortran’s SYNC MEMORY statement but is still a different type of image control statement), can be achieved through a ***‘sequential consistent memory ordering’***. (See the next section for details).
 
 #### 2. Mapping of Fortran Kernels through Parallel Loops
-I do further assume that mapping of Fortran kernels into spatial pipelines (with future Fortran spatial compilers) will be achieved through ***parallel loop instances*** on the coarray images (i.e. through the coarray run-time itself), and further through the loop iterations of each loop instance (on each coarray image). (See the sections *‘Parallel Loops in Coarray Fortran’* and *‘Fortran Spatial Kernels’* below).
+I do further assume that mapping of Fortran kernels into spatial pipelines (with future Fortran spatial compilers) will be achieved through *parallel loop instances* on the coarray images (i.e. through the coarray run-time itself), and further through the loop iterations of each loop instance (on each coarray image). (See the sections *‘Parallel Loops in Coarray Fortran’* and *‘Fortran Spatial Kernels’* below).
 
 #### 3. Spatial Coarrays
 I do assume that upcoming Fortran spatial compilers will implement coarrays as symmetric memory (ifort already has) for use with FPGA on-chip memories for efficient FPGA communication between Fortran kernels.
