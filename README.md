@@ -44,7 +44,7 @@ I am currently reluctant to implement *FIFO buffers* because I can’t see how t
 
 ## 3.  Ordered Execution Segments with Non-Blocking Synchronization in Coarray Fortran
 
-To allow for asynchronous coroutine execution (where each coarray image will execute multiple coroutines simultaneously), I do implement user-defined coarray-based *channels* (similar to *channels* with suspending send and receive in Kotlin) that do allow communication between kernels executing on different coarray images, and that do also allow for a lightweight and non-blocking synchronization mechanism (as well as controlling the execution flow) between kernels. (As a counterpart to pipes in DPC++ but without FIFO yet). Such user-defined *channels* do merge (non-atomic) data transfer and (atomic) synchronization into a single process, but can also be used to merely control the (spatial) execution flow atomically.<br />
+To allow for asynchronous coroutine execution (where each coarray image will execute multiple coroutines simultaneously), I do implement user-defined, coarray-based *channels* (similar to *channels* with suspending send and receive in Kotlin) that do allow communication between kernels executing on different coarray images, and that do also allow for a lightweight and non-blocking synchronization mechanism (as well as controlling the execution flow) between kernels. (As a counterpart to pipes in DPC++ but without FIFO yet). Such user-defined *channels* do merge (non-atomic) data transfer and (atomic) synchronization into a single process, but can also be used to merely control the (spatial) execution flow atomically.<br />
 
 #### A number of issues may arise from this:
 
@@ -53,6 +53,4 @@ To allow for asynchronous coroutine execution (where each coarray image will exe
 - We can’t use this non-blocking synchronization method alone to ensure the required *execution segment ordering* (Coarray Fortran) with it, instead we must additionally guarantee ‘a *sequentially consistent memory ordering*’ (see DPC++ or ask OpenGPT for a description in simple words) by applying a qualified parallel programming model with our programming.
 
 As a result, we are not completely free with the parallel programming styles and models that we are using for asynchronous code execution on each coarray image: We must use the user-defined channel to replace coarrays and we must apply programming styles and models to ensure the now required ‘*sequentially consistent memory ordering*’ with it. By that, **one could (validly) argue that I do break with the rules of Coarray Fortran in favor of parallel programming paradigms that do rather resemble with (Spatial) DPC++**.
-
-An important consequence of this is that the programmer has full responsibility to always guarantee *ordered execution segments* by means of a qualified parallel programming model to ensure a ‘*sequentially consistent memory ordering*’.
 
