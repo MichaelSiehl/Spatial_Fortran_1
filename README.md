@@ -56,3 +56,24 @@ To allow for asynchronous coroutine execution (where each coarray image will exe
 
 As a result, we are not completely free with the parallel programming styles and models that we are using for asynchronous code execution on each coarray image: We must use the user-defined channel to replace coarrays and we must apply programming styles and models to ensure the now required ‘*sequentially consistent memory ordering*’ with it. By that, **one could (validly) argue that I do break with the rules of Coarray Fortran in favor of parallel programming paradigms that do rather resemble with (Spatial) DPC++**.
 
+
+
+## 4.  Parallel Loops in Coarray Fortran
+
+The coarray run-time does inherently allow to use standard loop syntax for implementing parallel loops if the loop does execute on all coarray images (of a coarray team) simultaneously.
+
+Each coarray image does execute it’s own instance of the loop, and loop iterations for each loop instance can be synchronized (usually non-blocking and light-weight) with loop iterations on the other coarray images.
+
+
+#### *Code example: parallel loop to execute asynchronous coroutines*
+
+```Fortran
+parallel_loop: do ! parallel loop does execute on all coarray images simultaneously
+  ! calling multiple asynchronous coroutines simultaneously herein
+  ! timer for exit the loop:
+  call system_clock(count = i_time2); r_timeShift = real(i_time2-i_time1) / r_countRate
+  if (r_timeShift > r_timeLimitInSec) exit parallel_loop ! time limit exceeded
+end do parallel_loop
+```
+To emulate spatial kernel programming on a CPU, the execution control of asynchronous coroutines (groups of kernels) shall be placed inside such parallel loops (only one parallel loop per coarray team at the same time). I do assume that future Fortran spatial compilers will utilize such parallel loops to map (groups of) spatial kernels efficiently into spatial pipelines (see the next section). 
+
