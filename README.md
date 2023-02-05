@@ -50,7 +50,7 @@ To allow for asynchronous coroutine execution (where each coarray image will exe
 
 #### A number of issues may arise from this:
 
-- We can’t use such (user-defined) *non-blocking synchronization* methods to synchronize any data transfer through (non-atomic) coarrays, except with those (non-atomic) coarrays that are used directly with the synchronization method to implement the (Kotlin-style) channels. As a result, the (lightweight) synchronization and the non-atomic data transfer do form an entity within the user-defined channel. Coarrays are else prohibited with asynchronous code execution because of the else required blocking synchronization with them.
+- We can’t use such (user-defined) *non-blocking synchronization* methods to synchronize any data transfer through coarrays, except with those coarrays that are used directly with the synchronization method to implement the (Kotlin-style) channels. As a result, the (lightweight) synchronization and the non-atomic data transfer do form an entity within the user-defined channel. Coarrays are else prohibited with asynchronous code execution because of the else required blocking synchronization with them.
 
 - We can’t use this non-blocking synchronization method alone to ensure the required *execution segment ordering* (Coarray Fortran) with it, instead we must additionally guarantee ‘a *sequentially consistent memory ordering*’ (see DPC++ or ask OpenGPT for a description in simple words) by applying a qualified parallel programming model with our programming.
 
