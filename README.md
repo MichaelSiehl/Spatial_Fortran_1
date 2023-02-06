@@ -107,3 +107,52 @@ The above kernel does use a channel to send data as well as control information 
 Thus, in Fortran we (the spatial compiler) can use both, loops and coarrays (through the user-defined *channel*) to **pass data backward to an earlier stage in the spatial pipeline**, in comparison with Spatial DPC++ where they can use intra-kernel pipes only with ND-range kernels and not together with kernels through loops. Also, such Fortran kernels are not simply kernels through loops because the coarray runtime does automatically replicate the kernels for each coarray image. Instead these kernels may even be somewhat similar to ND-range kernels (with the ND-range defined at the level of coarray teams), but with the extension that the compiler might pass (non-coarray) data backward in the pipeline through loop iterations on each coarray image.
 
 
+
+## 6. Non-Blocking Synchronization (required for implementing asynchronous coroutines)
+
+Coarray Fortran does inherently allow asynchronous execution of coroutines. Only the required non-blocking synchronization method is not explicitly implemented with the language because it would certainly break with the coarray requirement of ***execution segment ordering***. Instead, we can implement a user-defined non-blocking synchronization method using (atomic) coarrays. This is very much the same as with a blocking synchronization, but with the exception that it does not contain a blocking spin-wait loop with a receive. Simply said, we remove this blocking spin-wait loop away from the synchronization and place it else with the execution control of the encompassing (asynchronous) coroutines.<br />
+**To still satisfy the requirement of segment ordering with coarray accesses, we must now apply parallel programming styles and models (with our parallel logic codes else) to ensure the now required ‘*sequentially consistent memory ordering*’ (see DPC++) with it.**
+
+
+#### *code example: implementing a non-blocking synchronization (send)*
+
+```Fortran
+!**** atomic send for synchronization and for control the execution flow: ****
+sync memory ! to complete the non-atomic send and to achieve segment ordering
+each_image: do i_loopImages = 1, fo % m_i_numberOfRemoteImages
+  i_currentRemoteImageNumber = fo % m_ia1_remoteImageNumbers (i_loopImages)
+  if (fo % m_l_useRemoteImageNumbersAsArrayIndex) i_arrayIndex = i_currentRemoteImageNumber
+  ! set an array element in remote PGAS memory atomically:
+  call atomic_define (fo % m_atomic_ia1_channelStatus_cc (i_arrayIndex) [i_currentRemoteImageNumber], i_chStat)
+end do each_image
+```
+
+#### *code example: implementing a non-blocking synchronization (receive)*
+
+```Fortran
+!**** check the atomic receive for synchronization and to control the execution flow: ****
+! non-blocking synchronization to allow for asynchronous coroutines, no spin-wait loop here !
+each_image_without_blocking: do i_loopImages = 1, fo % m_i_numberOfRemoteImages
+  if (l_useRemoteImageNumbersAsArrayIndex) i_arrayIndex = fo % m_ia1_remoteImageNumbers (i_loopImages)
+    ! access an array element in local PGAS memory atomically:
+    call atomic_ref (i_channelValue, fo % m_atomic_ia1_channelStatus_cc (i_arrayIndex) [i_thisImage])
+    ! check channel status (enum value) to synchronize:
+  if (i_chStat == i_channelValue) la1_checkImageChannelStates (i_loopImages) = .true. ! atomic data transfer was successful
+end do each_image_without_blocking
+!****
+if (.not. all(la1_checkImageChannelStates)) then ! the synchronization did not complete (yet)
+  isChannelReceive = .false. ! function return value (not successful yet)
+  return ! back to the coroutine(s)
+end if
+!****
+! the synchronization did complete:
+sync memory ! to complete the non-atomic receive and to achieve segment ordering
+isChannelReceive = .true. ! function return value (synchronization was successful)
+```
+
+This non-blocking synchronization method is already generic, so that we can execute the same routines on a single image or on several images for send and for receive.
+
+A crucial feature of the Fortran language is the combined usage of array and coarray syntax with the atomic subroutines here, and that this combined usage works with non-atomic coarrays as well: It is the key for collecting data from several coarray images.
+
+Within a coarray team there are usually several instances of these non-blocking synchronizations active at the same time, and they all do execute simultaneously and independently as part of several encompassing asynchronous coroutines within the same (spin-wait) parallel loop.
+
