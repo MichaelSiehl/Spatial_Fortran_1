@@ -65,7 +65,7 @@ The coarray run-time does inherently allow to use standard loop syntax for imple
 Each coarray image does execute it’s own instance of the loop, and loop iterations for each loop instance can be synchronized (usually non-blocking and light-weight) with loop iterations on the other coarray images.
 
 
-#### *Code example: parallel loop to execute asynchronous coroutines*
+#### *code example: parallel loop to execute asynchronous coroutines*
 
 ```Fortran
 parallel_loop: do ! parallel loop does execute on all coarray images simultaneously
@@ -76,4 +76,34 @@ parallel_loop: do ! parallel loop does execute on all coarray images simultaneou
 end do parallel_loop
 ```
 To emulate spatial kernel programming on a CPU, the execution control of asynchronous coroutines (groups of kernels) shall be placed inside such parallel loops (only one parallel loop per coarray team at the same time). I do assume that future Fortran spatial compilers will utilize such parallel loops to map (groups of) spatial kernels efficiently into spatial pipelines (see the next section). 
+
+
+
+## 5.  Fortran Spatial Kernels
+
+For a spatial compiler implementation it should make sense to identify Fortran’s BLOCK construct as an encompassing scoping unit for spatial kernels, as we can already use this syntax for asynchronous kernels on a CPU.
+
+
+#### *code example: spatial kernel using a user-defined channel to send data to different remote kernel*
+
+```Fortran
+kernel_1: block
+  integer :: i_value
+  real :: r_value
+  i_value = 22
+  r_value = 22.222
+  call channel % fill (i_val = i_value, r_val = r_value)
+  call channel % send (i_chstat = i_channelStatus)
+  ! this image is ready to execute the next kernel:
+  i_channelStatus = enum_channelStatus % kernel_2
+end block kernel_1
+```
+The restrictions for kernel codes are described for DPC++ and do certainly apply to Fortran as well. 
+
+Such Fortran kernels are still very different from DPC++ spatial kernels: The Fortran kernel here does execute through one or multiple instances of a parallel loop, each loop instance of a coarray image will execute it’s own version of the kernel or a different kernel.
+
+The above kernel does use a channel to send data as well as control information (through the i_chstat argument) to another (different) kernel on a distinct coarray image.
+
+Thus, in Fortran we (the spatial compiler) can use both, loops and coarrays (through the user-defined *channel*) to **pass data backward to an earlier stage in the spatial pipeline**, in comparison with Spatial DPC++ where they can use intra-kernel pipes only with ND-range kernels and not together with kernels through loops. Also, such Fortran kernels are not simply kernels through loops because the coarray runtime does automatically replicate the kernels for each coarray image. Instead these kernels may even be somewhat similar to ND-range kernels (with the ND-range defined at the level of coarray teams), but with the extension that the compiler might pass (non-coarray) data backward in the pipeline through loop iterations on each coarray image.
+
 
