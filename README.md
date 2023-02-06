@@ -84,7 +84,7 @@ To emulate spatial kernel programming on a CPU, the execution control of asynchr
 For a spatial compiler implementation it should make sense to identify Fortran’s BLOCK construct as an encompassing scoping unit for spatial kernels, as we can already use this syntax for asynchronous kernels on a CPU.
 
 
-#### *code example: spatial kernel using a user-defined channel to send data to different remote kernel*
+#### *code example: spatial kernel using a user-defined channel to send data to a different remote kernel on one or several remote coarray images*
 
 ```Fortran
 kernel_1: block
@@ -102,7 +102,7 @@ The restrictions for kernel codes are described for DPC++ and do certainly apply
 
 Such Fortran kernels are still very different from DPC++ spatial kernels: The Fortran kernel here does execute through one or multiple instances of a parallel loop, each loop instance of a coarray image will execute it’s own version of the kernel or a different kernel.
 
-The above kernel does use a channel to send data as well as control information (through the i_chstat argument) to another (different) kernel on a distinct coarray image.
+The above kernel does use a channel to send data as well as control information (through the i_chstat argument) to a different kernel on one or several remote coarray images.
 
 Thus, in Fortran we (the spatial compiler) can use both, loops and coarrays (through the user-defined *channel*) to **pass data backward to an earlier stage in the spatial pipeline**, in comparison with Spatial DPC++ where they can use intra-kernel pipes only with ND-range kernels and not together with kernels through loops. Also, such Fortran kernels are not simply kernels through loops because the coarray runtime does automatically replicate the kernels for each coarray image. Instead these kernels may even be somewhat similar to ND-range kernels (with the ND-range defined at the level of coarray teams), but with the extension that the compiler might pass (non-coarray) data backward in the pipeline through loop iterations on each coarray image.
 
