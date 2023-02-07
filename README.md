@@ -158,3 +158,9 @@ A crucial feature of the Fortran language is the combined usage of array and coa
 
 Within a coarray team there are usually several instances of these non-blocking synchronizations active at the same time, and they all do execute simultaneously and independently as part of several encompassing asynchronous coroutines within the same (spin-wait) parallel loop.
 
+
+
+## 7.  Starting with a Simple Parallel Programming Model
+
+***Single-task kernels*** do execute on a single coarray image and ***multi-task kernels*** (ND-range kernels in DPC++) do execute on multiple coarray images, and these both kernel types do execute simultaneously. I’ll start using a simple parallel programming model where we always do execute single task kernels (grouped into a *control coroutine*) on coarray image 1 (*control image*) and multi-task kernels (grouped into an *execute coroutine*) on all other coarray images (*execute images*), all within the same coarray team. Both single-task and multi-task kernels form an entity and are parallel kernels because they can only execute together in parallel with ***pairwise independent forward progress*** (see Spatial DPC++).
+
