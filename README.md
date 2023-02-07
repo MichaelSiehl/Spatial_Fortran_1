@@ -252,3 +252,30 @@ A channel is used for inexpensive communication between the kernels. Inexpensive
 
 A spatial compiler should be able to handle the control flow (select case) as a means to map the kernels efficiently to spatial areas on FPGAs.
 
+
+
+## 9.  Prerequisites
+
+I’d recommend the following links to resources to get started:
+
+#### Spatial Accelerator Architectures:
+- Intel’s Exascale Dataflow Engine Drops X86 And Von Neumann: https://www.nextplatform.com/2018/08/30/intels-exascale-dataflow-engine-drops-x86-and-von-neuman/
+- Evaluating Spatial Accelerator Architectures with Tiled Matrix-Matrix Multiplication: https://arxiv.org/pdf/2106.10499.pdf
+
+#### Coarray Fortran:
+- Coarrays in the next Fortran Standard (pdf): https://wg5-fortran.org/N1801-N1850/N1824.pdf
+- Additional Parallel Features in Fortran (pdf): https://wg5-fortran.org/N2001-N2050/N2007.pdf
+- Additional Parallel Features in Fortran (pdf, slices): https://www.lrz.de/services/compute/courses/x_lecturenotes/Parallel_Programming_Languages_Workshop/Coarray-Fortran.pdf
+- The Asynchronous Partitioned Global Address Space Model: https://www.cs.rochester.edu/u/cding/amp/papers/full/The%20Asynchronous%20Partitioned%20Global%20Address%20Space%20Model.pdf
+
+#### Spatial (FPGA) Programming using DPC++:
+- Data Parallel C++, Mastering DPC++ for Programming of Heterogeneous Systems using C++ and SYCL (book as pdf freely available): https://link.springer.com/book/10.1007/978-1-4842-5574-2
+- Spatial DPC++ Constructs for Algorithm Acceleration with FPGAs (video): https://www.intel.com/content/www/us/en/developer/videos/spatial-dpc-constructs-algorithm-acceleration-fpga.html
+https://www.oneapi.io/event-sessions/spatial-dpc-constructs-for-algorithm-acceleration-with-fpgas/
+
+#### Coroutine Tutorial for C#:
+- What is a Coroutine? : https://www.codeproject.com/Tips/5262735/What-is-a-Coroutine
+
+#### Channels in Kotlin:
+https://kotlinlang.org/docs/channels.html 
+
