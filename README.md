@@ -192,3 +192,63 @@ end if
 
 I consider this simple parallel programming model already as a foundation to achieve the required ‘***sequentially consistent memory ordering***’.
 
+
+
+## 8.  Grouping Kernels into Coroutines (and combining kernels from multiple coroutines into Fortran submodules)
+
+A coroutine is a convenient way to group multiple kernels together. Here we start with the simple parallel programming model where we group all single-task kernels into a *control coroutine* and where we group all multi-task kernels into an *execute coroutine*.
+
+We usually combine the kernels from our both coroutines (*control* and *execute coroutines*) into a single Fortran submodule, so that their codes form an integrated entity. This is not required for compiling and executing the codes, but it is a very convenient way to write parallel algorithms because we can bring together the codes that form an algorithm, which will not match with the actual parallel code execution sequence (on any hardware).
+
+
+#### *code example: grouping kernels from different coroutines*
+
+```Fortran
+subtask1_select: select case (i_imageType)
+!========================================================
+! control coroutine:
+case (enum_imageType % controlImage) ! on the control image
+  control_coroutine_subtask1: block
+    i_testValue = 22
+    r_testValue = 2.222
+    ia1_testArray = (/22,222,22222/)
+    call channel2 % fill (i_val = i_testValue, r_val = r_testValue, &
+                               ia1_val = ia1_testArray)
+    call channel2 % send (i_chstat = i_channel2Status)
+    ! this image is ready for the next task:
+    i_channel2Status = enum_channel2Status_CE1 % subtask2
+  end block control_coroutine_subtask1
+!========================================================
+! execute coroutine:
+case (enum_imageType % executeImage) ! on the execute images
+  execute_coroutine_subtask1: block
+    integer, dimension (1:1) :: ia1_scalarInteger
+    real, dimension (1:1) :: ra1_scalarReal
+    integer, dimension(1:3, 1:1) :: ia2_integerArray1D
+    ! always use only a single channel within a block with IsReceive !
+    ! (otherwise the data transfer through a channel will not synchronize successfully) !
+    if (channel2 % isReceive (i_chstat = i_channel2Status)) then
+      call channel2 % get (ia1_scalarInteger = ia1_scalarInteger, &
+                                ra1_scalarReal = ra1_scalarReal, &
+                                ia2_integer1D = ia2_integerArray1D)
+      i_testValue = ia1_scalarInteger (1)
+      r_testValue = ra1_scalarReal (1)
+      ia1_testArray = ia2_integerArray1D (:,1)
+      ! isReceive was successful, this image is ready for the next task:
+      i_channel2Status = enum_channel2Status_CE1 % subtask2
+      call system_clock(count = i_Time1) ! reset the timer
+    end if
+  end block execute_coroutine_subtask1
+!========================================================
+! error: unclassified image
+case default
+  return
+end select subtask1_select
+```
+
+The code example shows two kernels from the different coroutines (*control* and *execute*) combined together in code but executing on distinct coarray images (spatial pipelines) with pairwise forward progress.
+
+A channel is used for inexpensive communication between the kernels. Inexpensive also because the kernel of the execute coroutine does not execute before the synchronization (and data transfer) through the channel has completed, and in the meantime the coarray image (spatial pipeline) will execute another kernel from another asynchronous coroutine instead.
+
+A spatial compiler should be able to handle the control flow (select case) as a means to map the kernels efficiently to spatial areas on FPGAs.
+
