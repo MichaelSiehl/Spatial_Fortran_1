@@ -1,6 +1,5 @@
 # Approaching General Purpose Data Flow (Spatial) Programming for FPGAs Using Coarray Fortran (as yet only emulated on CPUs)
-## (Unified Kernel Programming for CPUs and FPGAs Using Coarray Fortran)
-## Part 1: Defining Some Basics
+## Unified Kernel Programming for CPUs and FPGAs Using Coarray Fortran <br /> - Part 1: Defining Some Basics
 
 I open this repository to initially define and describe some basic spatial programming techniques using Coarray Fortran (2018).
 
