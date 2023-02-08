@@ -1,4 +1,4 @@
-# General Purpose Data Flow (Spatial) Programming for FPGAs Using Coarray Fortran (as yet only emulated on CPUs)
+# Approaching General Purpose Data Flow (Spatial) Programming for FPGAs Using Coarray Fortran (as yet only emulated on CPUs)
 ## (Unified Kernel Programming for CPUs and FPGAs Using Coarray Fortran)
 ## Part 1: Defining Some Basics
 
@@ -9,7 +9,7 @@ Some familiarity with Coarray Fortran as well as with spatial programming concep
 
 
 
-## 1.  Prolog
+## 1.  Introduction
 
 Initially described for (Spatial) DPC++ yet, new generations of FPGAs do already allow new forms of parallel (spatial) programming to deliver unknown levels of parallel performance with a very low energy consumption to hopefully establish a new era of green computing. It is assumed that some LLVM-based Fortran compilers will become spatial compilers in the near future. As yet I do use the traditional Fortran compilers (gfortran/OpenCoarrays and ifort) to emulate spatial programming with Coarray Fortran on CPUs, and do assume (making a number of assumptions) that virtually the same codes will also run on FPGAs with an upcoming spatial compiler.<br />
 
