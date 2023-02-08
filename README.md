@@ -8,6 +8,21 @@ Some familiarity with Coarray Fortran as well as with spatial programming concep
 
 
 
+## Prologue: A Far-Reaching View for Approaching Data Flow (Spatial) Programming in the Exascale Era
+
+As we are entering the exascale and data flow (spatial) programming era, we should be aware of the extreme changes in the field of programming that we must expect to face in the foreseeable future. Before I start with the contents of this repository, let me briefly describe the big challenges as I see it now: 
+
+- **Using the same programming for CPUs and FPGAs (a topic here):**<br />
+Due to the expected very long compile times for FPGAs we must be able to use the same programming on both CPUs and FPGAs, to allow us to develop and test our FPGA codes on a CPU. Otherwise FPGA programming may not be feasible.
+
+- **Transforming procedural programming towards kernel programming (a topic here):**<br />
+Kernel programming is the future, no matter if we do program on CPUs (multicore), on FPGAs, or else. Kernel code has restrictions, and procedures that we may call from such kernel codes must certainly comply to such restrictions as well.
+
+- **Transforming OOP towards Distributed Objects Programming (not a topic here):**<br />
+All of my kernel programming is already embedded into distributed objects programming, and I am already using the same OOP syntax (including inheritance) to define and implement distributed objects in Fortran. While the syntax for distributed objects is the same as in OOP, the meaning of the syntax does become something completely different with distributed objects. A crucial advantage of using OOP syntax for Distributed Objects Programming is the already improved compile time analysis for parallel programming in Fortran, since compile time analysis does not distinguish between OOP and Distributed Objects Programming.
+
+
+
 ## 1.  Introduction
 
 Initially described for (Spatial) DPC++ yet, new generations of FPGAs do already allow new forms of parallel (spatial) programming to deliver unknown levels of parallel performance with a very low energy consumption to hopefully establish a new era of green computing. It is assumed that some LLVM-based Fortran compilers will become spatial compilers in the near future. As yet I do use the traditional Fortran compilers (gfortran/OpenCoarrays and ifort) to emulate spatial programming with Coarray Fortran on CPUs, and do assume (making a number of assumptions) that virtually the same codes will also run on FPGAs with an upcoming spatial compiler.<br />
