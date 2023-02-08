@@ -204,7 +204,7 @@ else if (this_image() > 1) then
 end if
 ```
 
-I consider this simple parallel programming model already as a foundation to achieve the required ‘***sequentially consistent memory ordering***’.
+I consider this simple parallel programming model already as a foundation for achieving the required ‘***sequentially consistent memory ordering***’.
 
 
 
