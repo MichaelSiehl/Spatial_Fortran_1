@@ -16,7 +16,7 @@ As we are entering the exascale and data flow (spatial) programming era, we shou
 Due to the expected very long compile times for FPGAs we must be able to use the same programming on both CPUs and FPGAs, to allow us to develop and test our FPGA codes on a CPU. Otherwise FPGA programming may not be feasible.
 
 - **Transforming procedural programming towards kernel programming (a topic here):**<br />
-Kernel programming is the future, no matter if we do programming on CPUs (multicore), on FPGAs, or else. Kernel code has restrictions, and procedures that we may call from such kernel codes must certainly comply to such restrictions as well.
+Kernel programming is the future and the key if we want to profit automatically by any future advances in hardware, no matter if we do programming on CPUs (multicore), on FPGAs, or else. Kernel code has restrictions, and procedures that we may call from such kernel codes must certainly comply to such restrictions as well.
 
 - **Transforming OOP towards Distributed Objects Programming (not a topic here):**<br />
 All of my kernel programming is already embedded into distributed objects programming, and I am already using the same OOP syntax (including inheritance) to define and implement distributed objects in Fortran. While the syntax for distributed objects is the same as in OOP, the meaning of the syntax does become something completely different with distributed objects. A crucial advantage of using OOP syntax for Distributed Objects Programming is the already improved compile time analysis for parallel programming in Fortran, since compile time analysis does not distinguish between OOP and Distributed Objects Programming.
