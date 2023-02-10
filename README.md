@@ -282,6 +282,7 @@ I’d recommend the following links to resources to get started:
 - Additional Parallel Features in Fortran (pdf, slices): https://www.lrz.de/services/compute/courses/x_lecturenotes/Parallel_Programming_Languages_Workshop/Coarray-Fortran.pdf
 - The Asynchronous Partitioned Global Address Space Model: https://www.cs.rochester.edu/u/cding/amp/papers/full/The%20Asynchronous%20Partitioned%20Global%20Address%20Space%20Model.pdf
 - Rationale for Co-Arrays in Fortran 2008: http://caf.rice.edu/documentation/Aleksandar-Donev-Coarray-Rationale-N1702-2007-09.pdf 
+- Fanfarillo, A., Burnus, T., Cardellini, V., Filippone, S., Nagle, D., & Rouson, D. (2014, October). OpenCoarrays: open-source transport layers supporting coarray Fortran compilers. In Proceedings of the 8th International Conference on Partitioned Global Address Space Programming Models (p. 4). ACM.: http://www.opencoarrays.org/
 
 #### Spatial (FPGA) Programming using DPC++:
 - Data Parallel C++, Mastering DPC++ for Programming of Heterogeneous Systems using C++ and SYCL (book as pdf freely available): https://link.springer.com/book/10.1007/978-1-4842-5574-2
