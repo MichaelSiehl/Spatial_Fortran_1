@@ -79,7 +79,7 @@ The coarray run-time does inherently allow to use standard loop syntax for imple
 Each coarray image does execute it’s own instance of the loop, and loop iterations for each loop instance can be synchronized (usually non-blocking and light-weight) with loop iterations on the other coarray images.
 
 
-#### *code example: parallel loop to execute asynchronous coroutines*
+#### *code example 4-1: parallel loop to execute asynchronous coroutines*
 
 ```Fortran
 parallel_loop: do ! parallel loop does execute on all coarray images simultaneously
@@ -98,7 +98,7 @@ To emulate spatial kernel programming on a CPU, the execution control of asynchr
 For a spatial compiler implementation it should make sense to identify Fortran’s BLOCK construct as an encompassing scoping unit for spatial kernels, as we can already use this syntax for asynchronous kernels on a CPU.
 
 
-#### *code example: spatial kernel using a user-defined channel to send data to a different remote kernel on one or several remote coarray images*
+#### *code example 5-1: spatial kernel using a user-defined channel to send data to a different remote kernel on one or several remote coarray images*
 
 ```Fortran
 kernel_1: block
@@ -130,7 +130,7 @@ Coarray Fortran does inherently allow asynchronous execution of coroutines. Only
 *(Note: In the code examples I am using 'fo %' instead of the usual 'this %' object identifier to make a clear distinction between OOP codes and distributed objects codes. My actual codes are already embedded into a distributed (fragmented) objects model (fo), and I am using the traditional OOP syntax merely to define and implement such distributed objects.)*
 
 
-#### *code example: implementing a non-blocking synchronization (send)*
+#### *code example 6-1: implementing a non-blocking synchronization (send)*
 
 ```Fortran
 !**** atomic send for synchronization and for control the execution flow: ****
@@ -143,7 +143,7 @@ each_image: do i_loopImages = 1, fo % m_i_numberOfRemoteImages
 end do each_image
 ```
 
-#### *code example: implementing a non-blocking synchronization (receive)*
+#### *code example 6-2: implementing a non-blocking synchronization (receive)*
 
 ```Fortran
 !**** check the atomic receive for synchronization and to control the execution flow: ****
@@ -181,7 +181,7 @@ Within a coarray team there are usually several instances of these non-blocking 
 I’ll start using a simple parallel programming model where we always do execute single task kernels (grouped into a *control coroutine*) on coarray image 1 (*control image*) and multi-task kernels (grouped into an *execute coroutine*) on all other coarray images (*execute images*), all within the same coarray team. Both, single-task and multi-task kernels form an entity and are parallel kernels because they can only execute together in parallel with ***pairwise independent forward progress*** (see Spatial DPC++).
 
 
-#### *code example: defining a simple parallel programming model*
+#### *code example 7-1: defining a simple parallel programming model*
 
 ```Fortran
 ! default for the control/execute coroutines:
@@ -215,7 +215,7 @@ A coroutine is a convenient way to group multiple kernels together. Here we star
 We usually combine the kernels from our both coroutines (*control* and *execute coroutines*) into a single Fortran submodule, so that their codes form an integrated entity. This is not required for compiling and executing the codes, but it is a very convenient way to write parallel algorithms because we can bring together the codes that form an algorithm, which will not match with the actual parallel code execution sequence (on any hardware).
 
 
-#### *code example: grouping kernels from different coroutines*
+#### *code example 8-1: grouping kernels from different coroutines*
 
 ```Fortran
 subtask1_select: select case (i_imageType)
