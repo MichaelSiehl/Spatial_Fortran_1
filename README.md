@@ -413,6 +413,18 @@ end procedure frob03_01_FM3_CE1_SM2
 end submodule frob03_01_sub_FM3_CE1_SM2
 ```
 
+The following subsections will refer to this code example to explain the underlying programming techniques.
+
+
+
+### 8.1  Fault Tolerant Execution with Pairwise Independent Forward Progress
+
+### 8.2  Sequential Consistent Memory Ordering
+
+### 8.3  Asynchronous Code Execution on the Single Coarray Images
+
+### 8.4  Collecting Data Across Spatial Pipelines
+
 
 
 ## 9.  Prerequisites
