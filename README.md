@@ -266,6 +266,155 @@ A channel is used for inexpensive communication between the kernels. Inexpensive
 
 A spatial compiler should be able to handle the control flow (select case) as a means to map the kernels efficiently to spatial areas on FPGAs.
 
+The next code example shows how programming at the SUBMODULE level is like, when we combine the two coroutines into a single MODULE PROCEDURE.
+
+
+#### *code example 8-2: combining two coroutines into a single MODULE PROCEDURE*
+
+```Fortran
+submodule (frob03_01_cls_FM3_CE1_SPMD) frob03_01_sub_FM3_CE1_SM2
+! using Channel2 for the control and execute coroutines herein,
+! and Channel4 for send to another coroutine in submodule frob03_01_sub_FM3_CE1_SM3
+implicit none
+
+contains
+
+module procedure frob03_01_FM3_CE1_SM2
+
+!----------------------------------------------------------------------------------------
+! (1) subtask1 block:
+subtask1_if: if (i_channel2Status == enum_channel2Status_CE1 % subtask1) then
+subtask1_block: block
+  integer :: i_testValue
+  real :: r_testValue
+  integer, dimension(1:3) :: ia1_testArray
+
+  subtask1_select: select case (i_imageType)
+  !========================================================
+
+  ! control coroutine:
+  case (enum_imageType % controlImage) ! on the control image
+    control_coroutine_subtask1: block
+      i_testValue = 22
+      r_testValue = 2.222
+      ia1_testArray = (/22,222,22222/)
+      call channel2 % fill (i_val = i_testValue, r_val = r_testValue, &
+                                 ia1_val = ia1_testArray)
+      call channel2 % send (i_chstat = i_channel2Status)
+      ! this image is ready for the next subtask:
+      i_channel2Status = enum_channel2Status_CE1 % subtask2
+      !*** sending to frob03_01_FM3_CE1_SM3 using Channel4:
+      ! (we can use multiple channels in the same block for sending)
+      if (i_channel4Status == enum_channel4Status_CE1 % subtask1) then
+        r_testValue = 4.444
+        call channel4 % fill (r_val = r_testValue)
+        call channel4 % send (i_chstat = i_channel4Status)
+        ! this image is ready for the next subtask for Channel4 (in this case e_xit):
+        i_channel4Status = enum_channel4Status_CE1 % e_xit
+      end if
+    end block control_coroutine_subtask1
+  !========================================================
+
+  ! execute coroutine:
+  case (enum_imageType % executeImage) ! on the execute images
+    execute_coroutine_subtask1: block
+      integer, dimension (1:1) :: ia1_scalarInteger
+      real, dimension (1:1) :: ra1_scalarReal
+      integer, dimension(1:3, 1:1) :: ia2_integerArray1D
+      ! always use only a single channel within a block with IsReceive !
+      ! (otherwise the data transfer through a channel will not synchronize successfully) !
+      if (channel2 % IsReceive (i_chstat = i_channel2Status)) then
+        call channel2 % get (ia1_scalarInteger = ia1_scalarInteger, &
+                                  ra1_scalarReal = ra1_scalarReal, &
+                                  ia2_integer1D = ia2_integerArray1D)
+        i_testValue = ia1_scalarInteger (1)
+        r_testValue = ra1_scalarReal (1)
+        ia1_testArray = ia2_integerArray1D (:,1)
+        write(*,*) 'from channel2:', i_testValue ! usually not supported in kernels
+        write(*,*) 'from channel2: ', r_testValue
+        write(*,*) 'from channel2: ', ia1_testArray
+        ! IsReceive was successful, this image is ready for the next subtask:
+        i_channel2Status = enum_channel2Status_CE1 % subtask2
+        call system_clock(count = i_time1) ! reset the timer
+      end if
+    end block execute_coroutine_subtask1
+  !========================================================
+
+  ! error: unclassified image
+  case default
+    return
+  end select subtask1_select
+end block subtask1_block
+end if subtask1_if
+! (1) end subtask1 block
+!----------------------------------------------------------------------------------------
+
+
+!----------------------------------------------------------------------------------------
+! (2) subtask2 block:
+subtask2_if: if (i_channel2Status == &
+                 enum_channel2Status_CE1 % subtask2) then
+subtask2_block: block
+
+  subtask2_select: select case (i_imageType)
+  !========================================================
+
+  ! execute coroutine:
+  case (enum_imageType % executeImage) ! on the execute images
+    execute_coroutine_subtask2: block
+      integer :: i_testValue
+      real :: r_testValue
+      integer, dimension(1:3) :: ia1_testArray
+      i_testValue = 222222
+      r_testValue = 22222.222
+      ia1_testArray = (/22222,2222222,22222222/)
+      call channel2 % fill (i_val = i_testValue, r_val = r_testValue, &
+                                                    ia1_val = ia1_testArray)
+      call channel2 % send (i_chstat = i_channel2Status)
+      ! this image is ready for the next task:
+      i_channel2Status = enum_channel2Status_CE1 % e_xit
+    end block execute_coroutine_subtask2
+  !========================================================
+
+  ! control coroutine:
+  case (enum_imageType % controlImage) ! on the control image
+    control_coroutine_subtask2: block
+      integer, dimension (1:i_numberOfExecutingImages) :: ia1_scalarInteger
+      real, dimension (1:i_numberOfExecutingImages) :: ra1_scalarReal
+      integer, dimension(1:3, 1:i_numberOfExecutingImages) :: ia2_integerArray1D
+      ! always use only a single channel within a block with IsReceive !
+      ! (otherwise the data transfer through a channel will not synchronize successfully) !
+      if (channel2 % IsReceive (i_chstat = i_channel2Status)) then
+        call channel2 % get (ia1_scalarInteger = ia1_scalarInteger, &
+                                  ra1_scalarReal = ra1_scalarReal, &
+                                  ia2_integer1D = ia2_integerArray1D)
+        write(*,*) 'from channel2: ', ia1_scalarInteger(:) ! usually not supported in kernels
+        write(*,*) 'from channel2: ', ra1_scalarReal(:)
+        write(*,*) 'from channel2: ', ia2_integerArray1D(:,:)
+        ! IsReceive was successful, this image is ready for the next task:
+        i_channel2Status = enum_channel2Status_CE1 % e_xit
+        call system_clock(count = i_time1) ! reset the timer
+      end if
+    end block control_coroutine_subtask2
+  !========================================================
+  
+  ! error: unclassified image
+  case default
+    return
+  end select subtask2_select
+
+end block subtask2_block
+end if subtask2_if
+! (2) end subtask2 block
+!----------------------------------------------------------------------------------------
+
+end procedure frob03_01_FM3_CE1_SM2
+
+!___________________________________________________________
+!
+end submodule frob03_01_sub_FM3_CE1_SM2
+```
+
 
 
 ## 9.  Prerequisites
