@@ -410,8 +410,6 @@ end if subtask2_if
 
 end procedure frob03_01_FM3_CE1_SM2
 
-!___________________________________________________________
-!
 end submodule frob03_01_sub_FM3_CE1_SM2
 ```
 
