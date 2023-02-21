@@ -208,7 +208,7 @@ I consider this simple parallel programming model already as a foundation for ac
 
 
 
-## 8.  Grouping Kernels into Coroutines and combining kernels from different coroutines into Fortran submodules
+## 8.  Grouping Kernels into Coroutines and Combining Kernels from Different Coroutines into Fortran Submodules
 
 A coroutine is a convenient way to group multiple kernels together. Here we start with the simple parallel programming model where we group all single-task kernels into a *control coroutine* and where we group all multi-task kernels into an *execute coroutine*.
 
@@ -419,7 +419,7 @@ The following subsections will refer to this code example to explain the underly
 
 ### 8.1  Fault Tolerant Execution with Pairwise Independent Forward Progress
 
-### 8.2  Sequential Consistent Memory Ordering
+### 8.2  Sequentially Consistent Memory Ordering
 
 ### 8.3  Asynchronous Code Execution on the Single Coarray Images
 
