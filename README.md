@@ -208,14 +208,14 @@ I consider this simple parallel programming model already as a foundation for ac
 
 
 
-## 8.  Grouping Kernels into Coroutines (and combining kernels from multiple coroutines into Fortran submodules)
+## 8.  Grouping Kernels into Coroutines and combining kernels from different coroutines into Fortran submodules
 
 A coroutine is a convenient way to group multiple kernels together. Here we start with the simple parallel programming model where we group all single-task kernels into a *control coroutine* and where we group all multi-task kernels into an *execute coroutine*.
 
 We usually combine the kernels from our both coroutines (*control* and *execute coroutines*) into a single Fortran submodule, so that their codes form an integrated entity. This is not required for compiling and executing the codes, but it is a very convenient way to write parallel algorithms because we can bring together the codes that form an algorithm, which will not match with the actual parallel code execution sequence (on any hardware).
 
 
-#### *code example 8-1: grouping kernels from different coroutines*
+#### *code example 8-1: combining kernels from different coroutines*
 
 ```Fortran
 subtask1_select: select case (i_imageType)
