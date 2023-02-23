@@ -42,7 +42,7 @@ Mapping of such coroutine kernels into spatial pipeline stages and building of s
 This work does rely on a number of assumptions:
 
 #### 1. Execution Segment Ordering (Coarray Fortran)
-I do assume that ***execution segment ordering*** with a user-defined ***non-blocking synchronization*** in Coarray Fortran (which does execute Fortran’s SYNC MEMORY statement but is still a different type of image control statement), can be achieved through a ***‘sequential consistent memory ordering’***. (See the next section for details).
+I do assume that ***execution segment ordering*** with a user-defined ***non-blocking synchronization*** in Coarray Fortran (which does execute Fortran’s SYNC MEMORY statement but is still a different type of image control statement), can be achieved through a ***‘sequentially consistent memory ordering’***. (See the next section for details).
 
 #### 2. Mapping of Fortran Kernels through Parallel Loops
 I do further assume that mapping of Fortran kernels into spatial pipelines (with future Fortran spatial compilers) will be achieved through *parallel loop instances* on the coarray images (i.e. through the coarray runtime itself), and further through the loop iterations of each loop instance (on each coarray image). (See the sections *‘Parallel Loops in Coarray Fortran’* and *‘Fortran Spatial Kernels’* below).
