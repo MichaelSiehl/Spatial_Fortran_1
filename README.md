@@ -421,9 +421,9 @@ The following subsections will refer to this code example to explain the underly
 
 ### 8.1  Sequentially Consistent Memory Ordering
 
-Each (successful) kernel execution involves an atomic (in-memory) operation through a channel’s i_chstat argument, either through a send or through a receive (see code examples 6-1 and 6-2). This leads to an ***acquire-release* memory ordering**.
+Each (successful) kernel execution involves an atomic (in-memory) operation through the channel’s *i_chstat* argument, either through a send or through a receive (see code examples 6-1 and 6-2). This leads to an ***acquire-release* memory ordering**.
 
-I am using an integer-based enumeration technique to assign values. These assigned integer-based enum values are a key to ensure the required ***sequentially consistent* memory ordering** with the execution here.
+Additionaly, I am using an integer-based enumeration technique to assign values here. These assigned integer-based enum values are another key to ensure the required ***sequentially consistent* memory ordering** with the execution of the coroutines here.
 
 
 
