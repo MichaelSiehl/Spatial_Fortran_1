@@ -42,7 +42,7 @@ Mapping of such coroutine kernels into spatial pipeline stages and building of s
 This work does rely on a number of assumptions:
 
 #### 1. Execution Segment Ordering (Coarray Fortran)
-I do assume that ***execution segment ordering*** with a user-defined ***non-blocking synchronization*** in Coarray Fortran (which does execute Fortran’s SYNC MEMORY statement but is still a different type of image control statement), can be achieved through a ***‘sequentially consistent memory ordering’***. (See the next section for details).
+I do assume that ***execution segment ordering*** with a user-defined ***non-blocking synchronization*** in Coarray Fortran (which does execute Fortran’s SYNC MEMORY statement but is still a different type of image control statement), can be achieved through a ***‘sequentially consistent memory ordering’***. (See sections 3 and 8.1 for details).
 
 #### 2. Mapping of Fortran Kernels through Parallel Loops
 I do further assume that mapping of Fortran kernels into spatial pipelines (with future Fortran spatial compilers) will be achieved through *parallel loop instances* on the coarray images (i.e. through the coarray runtime itself), and further through the loop iterations of each loop instance (on each coarray image). (See the sections *‘Parallel Loops in Coarray Fortran’* and *‘Fortran Spatial Kernels’* below).
@@ -66,7 +66,7 @@ To allow for asynchronous coroutine execution (where each coarray image will exe
 
 - We can’t use such (user-defined) *non-blocking synchronization* methods to synchronize any data transfer through coarrays, except with those coarrays that are used directly with the synchronization method to implement the (Kotlin-style) channels. As a result, the (lightweight) synchronization and the non-atomic data transfer do form an entity within the user-defined channel. Coarrays are else prohibited with asynchronous code execution because of the else required blocking synchronization with them.
 
-- We can’t use this non-blocking synchronization method alone to ensure the required *execution segment ordering* (Coarray Fortran) with it, instead we must additionally guarantee ‘a *sequentially consistent memory ordering*’ (see DPC++ or ask ChatGPT for a description in simple words) by applying a qualified parallel programming model with our programming.
+- We can’t use this non-blocking synchronization method alone to ensure the required *execution segment ordering* (Coarray Fortran) with it, instead we must additionally guarantee ‘a *sequentially consistent memory ordering*’ (see DPC++ or ask ChatGPT for a description in simple words, and see also section 8.1 here) by applying a qualified parallel programming model with our programming.
 
 As a result, we are not completely free with the parallel programming styles and models that we are using for asynchronous code execution on each coarray image: We must use the user-defined channel to replace coarrays and we must apply programming styles and models to ensure the now required ‘*sequentially consistent memory ordering*’ with it. By that, **one could (validly) argue that I do break with the rules of Coarray Fortran in favor of parallel programming paradigms that do rather resemble with (Spatial) DPC++**.
 
