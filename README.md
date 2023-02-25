@@ -419,9 +419,15 @@ The following subsections will refer to this code example to explain the underly
 
 
 
-### 8.1  Fault Tolerant Execution with Pairwise Independent Forward Progress
+### 8.1  Sequentially Consistent Memory Ordering
 
-### 8.2  Sequentially Consistent Memory Ordering
+Each (successful) kernel execution involves an atomic (in-memory) operation through a channel’s i_chstat argument, either through a send or through a receive (see code examples 6-1 and 6-2). This leads to an ***acquire-release* memory ordering**.
+
+I am using an integer-based enumeration technique to assign values. These assigned integer-based enum values are a key to ensure the required ***sequentially consistent* memory ordering** with the execution here.
+
+
+
+### 8.2  Fault Tolerant Execution with Pairwise Independent Forward Progress
 
 ### 8.3  Asynchronous Code Execution on the Single Coarray Images
 
