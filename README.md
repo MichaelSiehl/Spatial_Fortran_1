@@ -431,7 +431,7 @@ Additionaly, I am using an integer-based enumeration technique to assign values 
 
 The execution sequence of the kernels in a coroutine are sequentially ordered through the channel’s *i_chstat* argument, even if the ordering may change during execution. A crucial property is a constant swap of channel send and receive for successive execution of kernels on the coarray images. This is to ensure pairwise (independent) forward progress for parallel kernel execution.
 
-The execution control of the coroutines uses the atomic operation behind this send and receive. And, if something goes wrong within kernel execution, execution control uses a missing atomic operation as a signal for a potential failure. (Coarray images can then remain in a short 'wait mode' to see if the ‘failed’ coarray image was only delayed and not really a failure).
+The execution control of the coroutines uses the atomic operation behind this send and receive. And, if something goes wrong within kernel execution, execution control uses a missing atomic operation as a signal for a potential failure. (Coarray images can then remain in a short ‘wait mode’ to see if the ‘failed’ coarray image was only delayed and not really a failure).
 
 Strategies for handling such failures could be to recover by leaving and reentering a coarray team, or to simply continue execution with other channel instances (and other asynchronous coroutines) if this is still possible. (We may check for that possibility in the encompassing parallel loop).
 
