@@ -413,6 +413,8 @@ end procedure frob03_01_FM3_CE1_SM2
 end submodule frob03_01_sub_FM3_CE1_SM2
 ```
 
+The module procedure in code example 8-2 contains 4 kernels from 2 coroutines. Each of the coroutines comprises two kernels that do execute on the same coarray image(s) respectively: The kernels of the control coroutine do execute on a single control image (single-task kernels), and the kernels of the execute coroutine do execute on the multiple execute images (multi-task kernels).
+
 The following subsections will refer to this code example to explain the underlying programming techniques.
 
 
