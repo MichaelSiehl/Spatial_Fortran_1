@@ -447,6 +447,12 @@ Whereas on a CPU: Only one kernel per coarray image get’s executed at a time w
 
 ### 8.4  Collecting Data Across Spatial Pipelines
 
+Under the assumption that a single coarray image will lead into one spatial pipeline (and also if it’s more), there will be one spatial pipeline for a single-task coroutine (kernels) and multiple spatial pipelines for a multi-task coroutine (kernels).
+
+The last kernel in *code example 8-2* does call the channel’s *IsReceive* function on the single-task (*control*) image. That call does already collect data from the multiple sends of the multi-task (*execute*) images. That is also why we have to use arrays there, for the receive of the multiple scalar values.
+
+This property of our parallel programming model here together with the user-defined channel does provide great flexibility on a CPU already to collect distributed data regularly, and could be another foundation for a wide range of data flow algorithms on FPGAs.
+
 
 
 ## 9.  Prerequisites
