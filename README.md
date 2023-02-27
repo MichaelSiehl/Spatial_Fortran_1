@@ -330,9 +330,6 @@ subtask1_block: block
         i_testValue = ia1_scalarInteger (1)
         r_testValue = ra1_scalarReal (1)
         ia1_testArray = ia2_integerArray1D (:,1)
-        write(*,*) 'from channel2:', i_testValue ! usually not supported in kernels
-        write(*,*) 'from channel2: ', r_testValue
-        write(*,*) 'from channel2: ', ia1_testArray
         ! IsReceive was successful, this image is ready for the next subtask:
         i_channel2Status = enum_channel2Status_CE1 % subtask2
         call system_clock(count = i_time1) ! reset the timer
@@ -388,9 +385,6 @@ subtask2_block: block
         call channel2 % get (ia1_scalarInteger = ia1_scalarInteger, &
                                   ra1_scalarReal = ra1_scalarReal, &
                                   ia2_integer1D = ia2_integerArray1D)
-        write(*,*) 'from channel2: ', ia1_scalarInteger(:) ! usually not supported in kernels
-        write(*,*) 'from channel2: ', ra1_scalarReal(:)
-        write(*,*) 'from channel2: ', ia2_integerArray1D(:,:)
         ! IsReceive was successful, this image is ready for the next task:
         i_channel2Status = enum_channel2Status_CE1 % e_xit
         call system_clock(count = i_time1) ! reset the timer
