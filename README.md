@@ -114,7 +114,7 @@ end block kernel_1
 ```
 The restrictions for kernel codes are described for DPC++ and do certainly apply to Fortran as well. 
 
-Such Fortran kernels are still very different from DPC++ spatial kernels: The Fortran kernel here does execute through one or multiple instances of a parallel loop, each loop instance of a coarray image will execute it’s own version of the kernel or a different kernel.
+Such Fortran kernels are still very different from DPC++ spatial kernels: The Fortran kernel here does execute through one or multiple instances of a parallel loop, each loop instance on a coarray image will execute it’s own version of the kernel or a different kernel.
 
 The above kernel does use a channel to send data as well as control information (through the i_chstat argument) to a different kernel on one or several remote coarray images.
 
