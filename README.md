@@ -262,7 +262,7 @@ end select subtask1_select
 
 The code example shows two kernels from the different coroutines (*control* and *execute*) combined together in code but executing on distinct coarray images (spatial pipelines) with pairwise forward progress.
 
-A channel is used for inexpensive communication between the kernels. Inexpensive also because the kernel of the execute coroutine does not execute before the synchronization (and data transfer) through the channel has completed, and in the meantime the coarray image (spatial pipeline) will execute another kernel from another asynchronous coroutine instead.
+A channel is used for inexpensive communication between the kernels. Inexpensive also because the kernel of the execute coroutine does not execute before the synchronization (and data transfer) through the channel has completed, and in the meantime the coarray image (spatial pipeline) will execute another kernel from another asynchronous coroutine (one the same coarray image) instead.
 
 A spatial compiler should be able to handle the control flow (select case) as a means to map the kernels efficiently to spatial areas on FPGAs.
 
