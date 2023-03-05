@@ -433,9 +433,9 @@ Strategies for handling such failures could be to recover by leaving and reenter
 
 ### 8.3  Asynchronous Code Execution on the Single Coarray Images
 
-As the channel’s *IsReceive* function is non-blocking, we can use the encompassing parallel loop to implement an execution control that simultaneously executes multiple such MODULE PROCEDURES inside that parallel loop. A spatial compiler should be enabled to generate multiple (or merge into) spatial pipelines from the control flow (if-else / select-case). 
+As the channel’s *IsReceive* function is non-blocking, we can use the encompassing parallel loop to implement an execution control that simultaneously executes multiple such MODULE PROCEDURES inside that parallel loop. A spatial compiler should be enabled to generate multiple (or merge into) spatial pipelines from the control flow (if-else / select-case) on FPGAs.
 
-Whereas on a CPU: Only one kernel per coarray image get’s executed at a time with loop iterations, but we can still achieve more kernel execution across iterations as we have more (asynchronous) kernels available in a queue on each coarray image. To me these multiple asynchronous kernels on each coarray image are the key that should allow us to use the same programming on CPUs and FPGAs here. But on FPGAs, I would expect higher performance if kernels (the workload of each coarray image) are distributed to multiple spatial pipelines that can execute the workload of a single coarray image in parallel.
+Whereas on a CPU: Only one kernel per coarray image get’s executed at a time with loop iterations, but we can still achieve more kernel execution across iterations as we have more (asynchronous) kernels available in a queue on each coarray image. To me, these multiple asynchronous kernels on each coarray image are the key that should allow us to use the same programming on CPUs and FPGAs here. But on FPGAs I would expect higher performance if kernels (the workload of each coarray image) are distributed to multiple spatial pipelines that can execute the workload of a single coarray image in parallel.
 
 
 
