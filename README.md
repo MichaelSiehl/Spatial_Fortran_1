@@ -168,7 +168,7 @@ isChannelReceive = .true. ! function return value (synchronization was successfu
 
 This non-blocking synchronization method is already generic, so that we can execute the same routines on a single image or on several images for send and for receive.
 
-A crucial feature of the Fortran language is the combined usage of array and coarray syntax with the atomic subroutines here, and that this combined usage works with non-atomic coarrays as well: It is the key for collecting data from several coarray images.
+A crucial feature of the Fortran language is the combined usage of array and coarray syntax with the atomic subroutines here, and that this combined usage works with non-atomic coarrays as well: It is the key for collecting data from several coarray images. (See section 8.4).
 
 Within a coarray team there are usually several instances of these non-blocking synchronizations active at the same time, and they all do execute simultaneously and independently as part of several encompassing asynchronous coroutines within the same (spin-wait) parallel loop.
 
