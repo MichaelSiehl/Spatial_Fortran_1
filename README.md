@@ -212,7 +212,7 @@ I consider this simple parallel programming model already as a foundation for ac
 
 A coroutine is a convenient way to group multiple kernels together. Here we start with the simple parallel programming model where we group all single-task kernels into a *control coroutine* and where we group all multi-task kernels into an *execute coroutine*.
 
-We usually combine the kernels from our both coroutines (*control* and *execute coroutines*) into a single (or more) Fortran Module Procedure, so that their codes form an integrated entity. This is not required for compiling and executing the codes, but it is a very convenient way to write parallel algorithms because we can bring together the codes as they do form an algorithm.
+We usually combine the kernels from our both coroutines (*control* and *execute coroutines*) into a single (or more) Fortran Module Procedure, so that their codes form an integrated entity. This is not required for compiling and executing the codes, but **it is a very convenient way to write parallel algorithms because we can bring together the codes as they do form an algorithm**.
 
 
 #### *code example 8-1: combining kernels from different coroutines*
