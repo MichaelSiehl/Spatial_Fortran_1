@@ -116,7 +116,7 @@ The restrictions for kernel codes are described for DPC++ and do certainly apply
 
 Such Fortran kernels are still very different from DPC++ spatial kernels: The Fortran kernel here does execute through one or multiple instances of a parallel loop, each loop instance on a coarray image will execute it’s own version of the kernel or a different kernel.
 
-The above kernel does use a channel to send data as well as control information (through the i_chstat argument) to a different kernel on one or several remote coarray images.
+The above kernel does use a channel to send data as well as control information (through the *i_chstat* argument) to a different kernel on one or several remote coarray images.
 
 Thus, in Fortran we (the spatial compiler) can use both, loops and coarrays (through the user-defined *channel*) to **pass data backward to an earlier stage in the spatial pipeline**, in comparison with Spatial DPC++ where they can use intra-kernel pipes only with ND-range kernels and not together with kernels through loops. Also, such Fortran kernels are not simply kernels through loops because the coarray runtime does automatically replicate the kernels for each coarray image. Instead these kernels may even be somewhat similar to ND-range kernels (with the ND-range defined at the level of coarray teams), but with the extension that the compiler might pass (non-coarray) data backward in the pipeline through loop iterations on each coarray image.
 
