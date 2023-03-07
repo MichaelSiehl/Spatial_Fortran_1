@@ -54,7 +54,7 @@ I do assume that upcoming Fortran spatial compilers will implement coarrays as *
 I do also assume that the same Coarray Fortran programming techniques will work very similar on both CPUs and FPGAs. (The programming codes that I am using here do already work efficiently using gfortran/OpenCoarrays and ifort on a CPU).
 
 #### 5. FIFO buffers vs. Asynchronous Coroutines
-I am currently reluctant to implement *FIFO buffers* because I can’t see how these will work with asynchronous code execution on each coarray image. Instead I prefer to use *asynchronous coroutines* that do execute simultaneously on each coarray image, so that each coarray image does always execute a portion (kernel) of a task (coroutine). I consider usage of multiple *channels* simultaneously (for communication between kernels of the different *asynchronous coroutines*) as a buffer yet, but can’t tell if this will work as efficiently as *FIFO buffers* on FPGAs. *Asynchronous coroutines* do already work efficiently on a CPU and may qualify for a broaden range of (data flow) algorithms.
+I am currently reluctant to implement *FIFO buffers* because I can’t see how these will work with asynchronous code execution on each coarray image. Instead I prefer to use *asynchronous coroutines* that do execute simultaneously on each coarray image, so that each coarray image does always execute a portion (kernel) of a task (coroutine). **I consider usage of multiple *channels* simultaneously (for communication between kernels of the different *asynchronous coroutines*) as a buffer yet**, but can’t tell if this will work as efficiently as *FIFO buffers* on FPGAs. *Asynchronous coroutines* do already work efficiently on a CPU and may qualify for a broaden range of (data flow) algorithms.
 
 
 
