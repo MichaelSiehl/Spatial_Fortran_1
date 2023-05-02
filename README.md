@@ -476,3 +476,8 @@ https://www.oneapi.io/event-sessions/spatial-dpc-constructs-for-algorithm-accele
 #### Channels in Kotlin:
 https://kotlinlang.org/docs/channels.html 
 
+#### Hierarchical Parallelsim:
+- Hierarchical Parallelism in Kokkos: https://github.com/kokkos/kokkos/wiki/HierarchicalParallelism
+- The Kokkos Lectures - Module 4: Hierarchical Parallelism and Unique Token. (Conference): https://www.osti.gov/biblio/1813283
+- Kokkos: Hierarchical Parallelism. (Conference): https://www.osti.gov/biblio/1495790
+- Hierarchical Parallelism in Fortran 2018 (see chapter 3.1 the last paragraph there): https://wg5-fortran.org/N2151-N2200/ISO-IECJTC1-SC22-WG5_N2161_The_New_Features_of_Fortran_2018.pdf
