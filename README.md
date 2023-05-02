@@ -459,7 +459,7 @@ I’d recommend the following links to resources to get started:
 
 #### Coarray Fortran:
 - Coarrays in the next Fortran Standard (pdf): https://wg5-fortran.org/N1801-N1850/N1824.pdf
-- Additional Parallel Features in Fortran (pdf): https://wg5-fortran.org/N2001-N2050/N2007.pdf
+- Additional Parallel Features in Fortran (pdf): https://wg5-fortran.org/N2151-N2200/ISO-IECJTC1-SC22-WG5_N2161_The_New_Features_of_Fortran_2018.pdf
 - Additional Parallel Features in Fortran (pdf, slices): https://www.lrz.de/services/compute/courses/x_lecturenotes/Parallel_Programming_Languages_Workshop/Coarray-Fortran.pdf
 - The Asynchronous Partitioned Global Address Space Model: https://www.cs.rochester.edu/u/cding/amp/papers/full/The%20Asynchronous%20Partitioned%20Global%20Address%20Space%20Model.pdf
 - Rationale for Co-Arrays in Fortran 2008: http://caf.rice.edu/documentation/Aleksandar-Donev-Coarray-Rationale-N1702-2007-09.pdf 
